@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section class="container mt-5">
+        <div class="d-flex justify-content-start align-items-center">
+            <h1 class="text-dark" style="margin-right:1rem">
+                {{ title }}
+            </h1>
+            <svg width="50px" height="50px" viewBox="0 0 512 512" fill="#34CC2B" style="background:black">
+                <path d="M48,48V464H464V48ZM218,360.38,137.4,270.81l23.79-21.41,56,62.22L350,153.46,374.54,174Z" />
+            </svg>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <p class="text-left fs-6" style="color:#909090">
+                    {{ titleAccountInput }}
+                </p>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <form method="post" action="{{ path('reports') }}">
+                <div class="form-group mb-2" style="width: 14vw;">
+                    <input value="{{account_id}}" class="form-control" name="account_id" type="text" placeholder="Account id" style="border:0px;border-bottom:2px solid #cccccc;" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-secondary" name="get_data" type="submit">{{buttons['textBtnGetData']}}</button>
+                    <button class="btn btn-secondary" name="show_all" type="submit" value="show_all">{{buttons['textBtnShowAll']}}</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            <p class="text-left fs-6" style="color:#909090;border-bottom: 1px solid #cccccc;padding-bottom: 0.5rem;">Aggregated performance for All <strong>ACTIVE</strong> accounts listed below:</p>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                {% for nameTh in HeaderOfTheTable %}
+                                    <th scope="col">
+                                        {{nameTh }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in data %}
+                                <tr>
+                                    <td>{{ d["accountName"] }}</td>
+                                    <td>{{ d["accountId"] }}</td>
+                                    <td>{{ d["spend"] }}</td>
+                                    <td> {{ d["clicks"] }}</td>
+                                    <td> {{ d["impressions"] }}</td>
+                                    <td> {{ d["costPerClick"] }}</td>
+                                </tr>
+                            {% endfor %}
+                            {% if data|length < 1 %}
+                                 <tr><td colspan="6" align="center">{{errorMessage}}</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
